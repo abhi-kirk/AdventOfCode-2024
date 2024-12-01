@@ -23,7 +23,7 @@ assert len(l1) == len(l2)
 n = len(l1)
 
 # Part 1
-l1.sort()  # nlog(n)
+l1.sort()  # O(nlog(n))
 l2.sort()
 
 total_distance = 0
@@ -36,4 +36,4 @@ similarity_score = 0
 l2_count = Counter(l2)  # O(n)
 for i in range(n):  # O(n)
     similarity_score += l1[i] * l2_count[l1[i]]
-print("Similarity Score", similarity_score)
+print("Similarity Score:", similarity_score)
