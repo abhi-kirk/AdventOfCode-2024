@@ -12,9 +12,9 @@ data = [list(line.replace("\n", "")) for line in data]
 
 # Part 1: O(m.n)
 pos_map = {
-    "^": "up", 
-    "<": "left", 
-    ">": "right", 
+    "^": "up",
+    "<": "left",
+    ">": "right",
     "v": "down"
 }
 m, n = len(data), len(data[0])
@@ -25,9 +25,9 @@ for row in range(m):
             start_dir = pos_map[data[row][col]]
 
 turn_map = {
-    "up": "right", 
-    "right": "down", 
-    "down": "left", 
+    "up": "right",
+    "right": "down",
+    "down": "left",
     "left": "up"
 }
 
@@ -39,21 +39,21 @@ dirs = {
 }
 
 visited = set()
-row, col, dir = start_row, start_col, start_dir
+row, col, direction = start_row, start_col, start_dir
 visited.add((row, col))
 
 while True:
-    di, dj = dirs[dir]
+    di, dj = dirs[direction]
     new_row, new_col = row + di, col + dj
 
-    if new_row<0 or new_row>=m or new_col<0 or new_col>=n:
+    if new_row < 0 or new_row >= m or new_col < 0 or new_col >= n:
         break
 
     if data[new_row][new_col] == "#":
-        dir = turn_map[dir]
+        direction = turn_map[direction]
     else:
         row, col = new_row, new_col
-        visited.add((row, col)) 
+        visited.add((row, col))
 
 print("Number of distinct positions:", len(visited))
 
@@ -61,27 +61,28 @@ print("Number of distinct positions:", len(visited))
 # Part 2: O((m.n)^2)
 
 def is_guard_in_loop(data, start_row, start_col, start_dir):
-    visited = set()  
-    row, col, dir = start_row, start_col, start_dir
-    visited.add((row, col, dir))
+    visited = set()
+    row, col, direction = start_row, start_col, start_dir
+    visited.add((row, col, direction))
 
     while True:
-        di, dj = dirs[dir]
+        di, dj = dirs[direction]
         new_row, new_col = row + di, col + dj
 
         if new_row < 0 or new_row >= m or new_col < 0 or new_col >= n:
             break
 
         if data[new_row][new_col] == "#":
-            dir = turn_map[dir]
+            direction = turn_map[direction]
         else:
             row, col = new_row, new_col
             # if guard is in the same position with the same dir, then in loop
-            if (row, col, dir) in visited:
+            if (row, col, direction) in visited:
                 return True
-            visited.add((row, col, dir))
+            visited.add((row, col, direction))
 
     return False
+
 
 count = 0
 
