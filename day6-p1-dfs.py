@@ -1,9 +1,9 @@
-# Guard Gallivant [with graph algorithms]
+# Guard Gallivant [p1 graph,  p2 optimized]
 
 import pathlib
 import os
 import sys
-from collections import defaultdict
+from time import time
 
 sys.setrecursionlimit(10_000)
 
@@ -64,27 +64,40 @@ visited = dfs(start_row, start_col, start_dir, set())
 print("Number of distinct positions:", len(visited))
 
 
-# Part 2: O((m.n)^2)
-def build_graph(path):
-    pass
+# Part 2: O(k.(m.n))
+# k := number of visited cells in Part 1
+def is_guard_in_loop(data, start_row, start_col, start_dir):
+    visited = set()
+    row, col, direction = start_row, start_col, start_dir
+    visited.add((row, col, direction))
 
+    while True:
+        di, dj = dirs[direction]
+        new_row, new_col = row + di, col + dj
 
-def is_cycle_kahns(i, j, direction, visited, grid):
-    # create graph
-    di, dj = dirs[direction]
-    i_new, j_new = i+di, j+dj
-    if i_new < 0 or i_new >= m or j_new < 0 or j_new >= n:
-        return False
+        if new_row < 0 or new_row >= m or new_col < 0 or new_col >= n:
+            break
 
-    pass
+        if data[new_row][new_col] == "#":
+            direction = turn_map[direction]
+        else:
+            row, col = new_row, new_col
+            # if guard is in the same position with the same dir, then in loop
+            if (row, col, direction) in visited:
+                return True
+            visited.add((row, col, direction))
+
+    return False
 
 
 count = 0
-for i, j in visited:
-    data[i][j] = "#"
-    graph, nodes = build_graph(path)
-    if is_cycle_kahns(graph, nodes):
-        count += 1
-    data[i][j] = "."
+start = time()
+for row, col in visited:
+    if data[row][col] == ".":
+        data[row][col] = "#"
+        if is_guard_in_loop(data, start_row, start_col, start_dir):  # O(m.n)
+            count += 1
+        data[row][col] = "."  # backtrack
 
+print(f"Part 2 time: {time() - start:.2f}s (vs. 21.42s unoptimized)")
 print("Number of ways to place an obstruction that causes a loop:", count)
