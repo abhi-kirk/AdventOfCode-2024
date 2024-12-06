@@ -2,9 +2,10 @@
 
 import pathlib
 import os
+from time import time
 
 base_path = pathlib.Path(__file__).parent.resolve()
-input_path = os.path.join(base_path, "test.txt")
+input_path = os.path.join(base_path, "input.txt")
 
 with open(input_path, "r", encoding="utf-8") as f:
     data = f.readlines()
@@ -85,7 +86,7 @@ def is_guard_in_loop(data, start_row, start_col, start_dir):
 
 
 count = 0
-
+start = time()
 for row in range(m):
     for col in range(n):
         if data[row][col] == ".":
@@ -94,4 +95,5 @@ for row in range(m):
                 count += 1
             data[row][col] = "."  # backtrack
 
+print(f"Part 2 time: {time() - start:.2f}s")
 print("Number of ways to place an obstruction that causes a loop:", count)
