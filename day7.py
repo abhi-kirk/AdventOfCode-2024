@@ -54,7 +54,7 @@ for eqn in data:
 
 print("Total calibration result:", s)
 
-# Part 2: O(n.2^(n-1))
+# Part 2: O(n.3^(n-1))
 s = 0
 start = time()
 for eqn in data:
