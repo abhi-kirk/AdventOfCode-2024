@@ -103,17 +103,19 @@ def get_sides(region):
                 continue
             visited.add((node, direction))
 
-            if node + direction not in region:
+            if node + direction not in region:  # found an edge!
                 sides += 1
 
                 # move along the edge in forward direction (90 degrees from current)
                 nei = node + direction * 1j
+                # next node should be in region, and also be an edge node (i.e., 90 degree nei node not in region)
                 while nei in region and nei + direction not in region:
                     visited.add((nei, direction))
                     nei += direction * 1j
 
                 # move along the edge in backward direction (-90 degrees from current)
                 nei = node - direction * 1j
+                # next node should be in region, and also be an edge node
                 while nei in region and nei + direction not in region:
                     visited.add((nei, direction))
                     nei -= direction * 1j
