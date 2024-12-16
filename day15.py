@@ -27,19 +27,19 @@ DIRECTIONS = {
 
 
 def find_robot(grid):
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
+    for row in range(m):
+        for col in range(n):
             if grid[row][col] == "@":
                 return row, col
 
 def find_box(grid):
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
+    for row in range(m):
+        for col in range(n):
             if grid[row][col] in ["O", "["]:
                 yield row, col
 
 def is_valid(grid, row, col):
-    return 0 <= row < len(grid) and 0 <= col < len(grid[0]) and grid[row][col] != "#"
+    return 0 <= row < m and 0 <= col < n and grid[row][col] != "#"
 
 
 def check_movable(grid, row, col, dr, dc, seen):
@@ -110,11 +110,11 @@ initial_grid = grid
 grid = []
 
 # expand the grid
-for row in range(len(initial_grid)):
+for row in range(m):
     if len(grid) <= row or row not in grid:
         grid.append([])
 
-    for col in range(len(initial_grid[0])):
+    for col in range(n):
         ch = initial_grid[row][col]
         if ch == "#":
             grid[row].extend(["#", "#"])
@@ -125,6 +125,7 @@ for row in range(len(initial_grid)):
         elif ch == "@":
             grid[row].extend(["@", "."])
 
+m, n = len(grid), len(grid[0])
 row, col = find_robot(grid)
 for instruction in instructions:
     row, col = process_instruction(grid, row, col, instruction)
